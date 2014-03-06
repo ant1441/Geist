@@ -84,6 +84,20 @@ class Location(object):
             self.h,
             (self._mp_x_offset,  self._mp_y_offset))
 
+    def __eq__(self, other):
+        if self._x != other._x:
+            return False
+        if self._y != other._y:
+            return False
+        if self._w != other._w:
+            return False
+        if self._h != other._h:
+            return False
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
 
 class LocationList(list):
     def find(self, gui):
