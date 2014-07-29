@@ -7,6 +7,21 @@ Computer vision based UI automation library.
 
 Please file bug reports.
 
+To start using geist, execute the `prereq.py` file with:
+
+``` python
+ipython -i prereq.py
+```
+
+This will set the following aliases, which you may find useful:
+
+ * C: Show capture. Shows a capture of the current screen.
+ * V: Viewer. An instance of the Viewer class, with the current gui and repo set.
+ * S: Save current image. Saves the current image into the repo.
+ * F: Show found. Highlights locations on the screen where the finder matched.
+ * R: Show repo. Display a saved image.
+
+
 Repository
 ========== 
 
