@@ -1,10 +1,16 @@
 from __future__ import division
-import numpy
+from keyword import kwlist
+import glob
 import os
 import os.path
-import glob
+import re
+
+import numpy
+
 from .finders import BaseFinder
 
+
+VALID_NAME = re.compile(r'[a-zA-Z_][a-zA-Z0-9_]*')
 
 class Template(object):
     def __init__(self, image, name, repo):
@@ -27,6 +33,16 @@ class DirectoryRepo(object):
         except:
             pass
 
+    def _valid_name(self, name):
+        """
+        Check this is a valid name, otherwise we might have issues later
+        """
+        if VALID_NAME.match(name) is None:
+            return False
+        if name in kwlist:
+            return False
+        return True
+
     def __getitem__(self, key):
         self.__ensure_dir_exists()
         imgpath = os.path.join(self.__directory, key + '.npy')
@@ -37,6 +53,8 @@ class DirectoryRepo(object):
 
     def __setitem__(self, key, value):
         self.__ensure_dir_exists()
+        if not self._valid_name(key):
+            raise NameError(key)
         if type(value) is numpy.ndarray:
             numpy.save(os.path.join(self.__directory, key + '.npy'), value)
         else:
