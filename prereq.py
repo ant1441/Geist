@@ -1,6 +1,6 @@
 try:
     get_ipython().magic(u'pylab')
-except NameError
+except NameError:
     pass
 import sys
 
