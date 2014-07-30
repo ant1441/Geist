@@ -21,9 +21,50 @@ This will import some useful things, and set the following aliases, which you ma
  * F: Show found. Highlights locations on the screen where the finder matched.
  * R: Show repo. Display a saved image.
 
+This prereq file creates a `DirectoryRepo` in the current directory, allowing you to store images here.
+It also sets up two of the most basic finders `approx_finder` and `exact_finder`, which can be used to match the stored images.
+
+
+Finders
+=======
+Geist uses _finders_ to locate locations on the screen.
+The most simple finder is `geist.finders.Location`, which simply represents a location on the screen.
+
+## Searching for a finder
+To actual perform the search for a location on a screen, use `gui.find_all`
+
+``` python
+# Search for a 15x15 square with top left at (10, 10)
+gui.find_all(Location(10, 10, 15, 15))
+```
+
+There are many other methods on `GUI` which allow more nuanced searches.
+
+ * `gui.find_all` returns all locations found by a finder.
+ * `gui.wait_find_n` returns if it finds `n` matches within the timeout, else it raises `NotFoundError`.
+ * `gui.exists` returns `True` if a match is found, else returns `False`.
+ * `gui.exists_within_timeout` returns `True` if a match is found within the timeout, else returns `False`.
+
+## Finder Composition
+Some finders work on external information, such as `Location` which works on coordinates and `ApproxTemplateFinder`, which works with images.
+However, many finders, such as `geist.filters.LocationFinderFilter` work with other finders.
+Using these finders and filters we can join multiple finders, filter them, sort them and work on them in other ways.
+This allows us to create powerful, flexible finders out of other, more simplistic finders.
+
+For example, a common use case is to find the topmost result out of a finder.
+
+``` python
+top_most = lambda finder: SliceFinderFilter(
+    SortingFinder(finder, lambda loc: loc.y)
+)[0]
+
+```
+
+(`top_most` is actually available at `geist.filters.top_most`)
+
 
 Repository
-========== 
+==========
 
 A repository is a store of captured images.
 Geist includes `geist.repo.DirectoryRepo` which stores images as .npy blobs in a directory.
@@ -50,7 +91,7 @@ Example:
 ``` python
 from geist.backends import get_platform_backend
 
-backend = get_platform_backend(screen_number)
+backend = get_platform_backend()
 ```
 
 GUI
