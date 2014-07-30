@@ -24,7 +24,7 @@ def fake_gui(filename):
 backend, gui = init_gui()
 if sys.platform == 'linux2':
     backend.create_process('fluxbox')
-#backend, gui = fake_gui('submit.npy')
+#backend, gui = fake_gui('screen.npy')
 
 repo = DirectoryRepo('.')
 approx_finder = TemplateFinderFromRepo(repo, ApproxTemplateFinder)
