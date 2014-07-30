@@ -27,7 +27,7 @@ Repository
 
 A repository is a store of captured images.
 Geist includes `geist.repo.DirectoryRepo` which stores images as .npy blobs in a directory.
-These images can be used to search within the display, using geist.visualfinders.ApproxTemplateFinder.
+These images can be used to search within the display, using `geist.visualfinders.ApproxTemplateFinder`.
 
 Example:
 
