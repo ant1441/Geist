@@ -31,6 +31,12 @@ class _GuiMergedOptions(object):
 
 
 class _GuiOptionsHelper(object):
+    """
+    Helper class to handle the options to GUI.
+
+    Parses the docstring of GUI in order to extract the available options
+    (starting with * for required options and - for optional).
+    """
     def __init__(self, text, options):
         self._method_allowed = set()
         constructor_allowed = set()
@@ -175,16 +181,29 @@ class GUI(object):
             actions.add_wait(merged_opts.mouse_move_wait)
 
     def capture_locations(self):
+        """
+        Return a list of Location objects representing all available 'screens'.
+        """
         return LocationList(self._backend.capture_locations())
 
     def cursor_location(self):
+        """
+        Return a Location object for the location of the cursor.
+        """
         x, y = self._backend.cursor_position()
         return Location(x, y)
 
     def find_all(self, finder):
+        """
+        Return all locations which are found by finder.
+        """
         return LocationList(self._find_all_gen(finder))
 
     def wait_find_with_result_matcher(self, finder, matcher, **options):
+        """
+        Return list of Location objects from finder if that list matches
+        matcher in the timeout. Otherwise raise NotFoundError.
+        """
         start_time = time.time()
         while True:
             results = self.find_all(finder)
@@ -198,6 +217,10 @@ class GUI(object):
                                         results))
 
     def wait_find_n(self, n, finder, **options):
+        """
+        Return a list of Location objects from finder if there are n of them
+        found in the timeout.
+        """
         return self.wait_find_with_result_matcher(
             finder,
             has_length(n),
@@ -205,6 +228,10 @@ class GUI(object):
         )
 
     def wait_find_one(self, finder, **options):
+        """
+        Return a list of Location objects from finder if one is found in the
+        timeout.
+        """
         return self.wait_find_n(1, finder, **options)[0]
 
     def drag(self, from_finder, to_finder, **options):
@@ -255,6 +282,9 @@ class GUI(object):
         return location
 
     def _click(self, finder, button, times, options):
+        """
+        Click on the location found from finder 'times' number of times.
+        """
         merged_opts = self._opts.merge(options)
         location = self.wait_find_one(finder, **options)
         with self._backend.actions_transaction() as actions:
@@ -269,9 +299,11 @@ class GUI(object):
         return location
 
     def click(self, finder, **options):
+        """(Left) Click on the location found from finder."""
         self._click(finder, 1, 1, options)
 
     def double_click(self, finder, **options):
+        """Double (Left) Click on the location found from finder."""
         self._click(finder, 1, 2, options)
 
     def context_click(self, finder, **options):
