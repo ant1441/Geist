@@ -12,6 +12,9 @@ class TestDirectoryRepo(unittest.TestCase):
     def test_invalid_name(self):
         self.assertFalse(self.repo._valid_name('1valid'))
 
+    def test_keyword(self):
+        self.assertFalse(self.repo._valid_name('pass'))
+
 
 directory_repo_suite = unittest.TestLoader().loadTestsFromTestCase(
     TestDirectoryRepo)
