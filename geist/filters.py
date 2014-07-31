@@ -3,11 +3,17 @@ from .finders import BaseFinder
 
 
 class LocationFinderFilter(BaseFinder):
+    """
+    Filter found locations with filter_func.
+    """
     def __init__(self, filter_func, finder):
         self.filter_func = filter_func
         self.finder = finder
 
     def find(self, in_location):
+        """
+        Find all Locations from finder.find and filter them on filter_func.
+        """
         for loc in self.finder.find(in_location):
             if self.filter_func(loc):
                 yield loc
@@ -29,6 +35,9 @@ class SortingFinder(BaseFinder):
         self.reverse = reverse
 
     def find(self, in_location):
+        """
+        Return a sorted list of all Locations from finder.
+        """
         for loc in sorted(
             self.finder.find(in_location),
             key=self.key,

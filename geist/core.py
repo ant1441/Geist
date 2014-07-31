@@ -173,7 +173,8 @@ class GUI(object):
             inc_x = x_distance / num_increments
             inc_y = y_distance / num_increments
             for i in range(start_increment, num_increments):
-                actions.add_move((int(from_x + (inc_x*i)), int(from_y + (inc_y*i))))
+                actions.add_move((int(from_x + (inc_x * i)),
+                                  int(from_y + (inc_y * i))))
                 if merged_opts.mouse_move_wait != 0:
                     actions.add_wait(merged_opts.mouse_move_wait)
         actions.add_move(to_point)
@@ -307,9 +308,13 @@ class GUI(object):
         self._click(finder, 1, 2, options)
 
     def context_click(self, finder, **options):
+        """(Right) Click on the location found from finder."""
         self._click(finder, 3, 1, options)
 
     def key_presses(self, *text_or_keys, **options):
+        """
+        Press keys given in text_or_keys.
+        """
         merged_opts = self._opts.merge(options)
         key_actions = []
         for text_or_key in text_or_keys:
@@ -337,9 +342,16 @@ class GUI(object):
                     raise ValueError('Key action must be a KeyUp or KeyDown')
 
     def exists(self, finder):
+        """
+        Return True if any Locations were found from finder, else return False.
+        """
         return True if self.find_all(finder) else False
 
     def exists_within_timeout(self, finder, **options):
+        """
+        Return True if any Locations were found from finder before timeout,
+        else return False.
+        """
         try:
             self.wait_find_with_result_matcher(
                 finder,
@@ -351,6 +363,10 @@ class GUI(object):
             return False
 
     def does_not_exist_within_timeout(self, finder, **options):
+        """
+        Return False if any Locations were found from finder before timeout,
+        else return True.
+        """
         try:
             self.wait_find_with_result_matcher(
                 finder,
@@ -360,4 +376,3 @@ class GUI(object):
             return True
         except NotFoundError:
             return False
-

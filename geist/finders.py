@@ -13,6 +13,11 @@ class BaseFinder(object):
 
 
 class Location(BaseFinder):
+    """
+    Represents a location on the screen.
+    (0, 0) is the top left of the screen, and rel_x and rel_y are offsets from
+    here.
+    """
     def __init__(self, rel_x, rel_y, w=1, h=1, main_point_offset=None,
                  parent=None, image=None):
         """rel_x, rel_y, w, h are all cast to integers as its assumed we are
